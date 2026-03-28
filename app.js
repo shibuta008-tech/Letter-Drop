@@ -553,7 +553,7 @@
     const rightInset = desktop && yakuRect ? width - yakuRect.left + 24 : 0;
     const topInset = desktop
       ? Math.min(180, height * 0.19)
-      : Math.max((heroRect?.bottom ?? 0) + 8, 110);
+      : Math.max((heroRect?.bottom ?? 0) + 6, 72);
     const bottomLimit = desktop
       ? height - 80
       : Math.max((touchRect?.top ?? height - 96) - 18, topInset + 120);
