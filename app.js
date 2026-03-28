@@ -385,12 +385,21 @@
   const matchedLine = document.getElementById("matched-line");
   const yakuCard = document.querySelector(".yaku-card");
   const yakuList = document.getElementById("yaku-list");
+  const touchControls = document.querySelector(".touch-controls");
   const rotateButton = document.getElementById("touch-rotate");
   const leftButton = document.getElementById("touch-left");
   const rightButton = document.getElementById("touch-right");
   const dropButton = document.getElementById("touch-drop");
 
   let previousTime = performance.now();
+
+  function getViewportSize() {
+    const viewport = window.visualViewport;
+    return {
+      width: viewport ? viewport.width : window.innerWidth,
+      height: viewport ? viewport.height : window.innerHeight,
+    };
+  }
 
   function updateHud() {
     scoreValue.textContent = `${game.score}`;
@@ -414,11 +423,12 @@
   }
 
   function resizeCanvas() {
+    const viewport = getViewportSize();
     const dpr = window.devicePixelRatio || 1;
-    canvas.width = Math.floor(window.innerWidth * dpr);
-    canvas.height = Math.floor(window.innerHeight * dpr);
-    canvas.style.width = `${window.innerWidth}px`;
-    canvas.style.height = `${window.innerHeight}px`;
+    canvas.width = Math.floor(viewport.width * dpr);
+    canvas.height = Math.floor(viewport.height * dpr);
+    canvas.style.width = `${viewport.width}px`;
+    canvas.style.height = `${viewport.height}px`;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
@@ -529,26 +539,40 @@
   }
 
   function render() {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    const viewport = getViewportSize();
+    const width = viewport.width;
+    const height = viewport.height;
     const heroRect = heroCard ? heroCard.getBoundingClientRect() : null;
     const yakuRect = yakuCard && getComputedStyle(yakuCard).display !== "none" ? yakuCard.getBoundingClientRect() : null;
+    const touchRect = touchControls && getComputedStyle(touchControls).display !== "none"
+      ? touchControls.getBoundingClientRect()
+      : null;
     const desktop = width > 900;
     const leftInset = desktop && heroRect ? heroRect.right + 40 : 0;
     const rightInset = desktop && yakuRect ? width - yakuRect.left + 24 : 0;
-    const topInset = !desktop && heroRect
-      ? Math.min(heroRect.bottom + 18, height * 0.34)
-      : Math.min(180, height * 0.19);
-    const bottomPad = desktop ? 80 : 150;
-    const usableWidth = Math.max(width - leftInset - rightInset, width * 0.32);
-    const usableHeight = Math.max(height - topInset - bottomPad, height * 0.35);
-    const cs = Math.min(usableWidth / (game.cols + 1.8), usableHeight / game.rows);
+    const topInset = desktop
+      ? Math.min(180, height * 0.19)
+      : Math.max((heroRect?.bottom ?? 0) + 14, 140);
+    const bottomLimit = desktop
+      ? height - 80
+      : Math.max((touchRect?.top ?? height - 96) - 18, topInset + 120);
+    const usableWidth = desktop
+      ? Math.max(width - leftInset - rightInset, width * 0.32)
+      : Math.max(width - 32, width * 0.68);
+    const usableHeight = desktop
+      ? Math.max(height - topInset - 80, height * 0.35)
+      : Math.max(bottomLimit - topInset, height * 0.22);
+    const cs = desktop
+      ? Math.min(usableWidth / (game.cols + 1.8), usableHeight / game.rows)
+      : Math.min(usableWidth / game.cols, usableHeight / game.rows);
     const boardW = cs * game.cols;
     const boardH = cs * game.rows;
     const gx = desktop
       ? leftInset + Math.max((usableWidth - boardW) / 2, 0)
       : Math.max((width - boardW) / 2, 0);
-    const gy = Math.max(topInset, (height - boardH) / 2);
+    const gy = desktop
+      ? Math.max(topInset, (height - boardH) / 2)
+      : topInset + Math.max((usableHeight - boardH) / 2, 0);
     const letterSize = cs * 1.02;
 
     ctx.clearRect(0, 0, width, height);
@@ -582,20 +606,22 @@
 
     drawClearAnimation(gx, gy, cs, letterSize);
 
-    ctx.fillStyle = "rgba(23, 19, 17, 0.42)";
-    ctx.font = '700 11px "SF Mono", "Menlo", monospace';
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    const nextX = Math.min(gx + boardW + 42, width - 34);
-    ctx.fillText("NEXT", nextX, gy + 18);
-    drawLetter(
-      game.nextCh,
-      0,
-      game.vitaminColors[game.nextColorIndex],
-      nextX,
-      gy + 50,
-      24
-    );
+    if (desktop) {
+      ctx.fillStyle = "rgba(23, 19, 17, 0.42)";
+      ctx.font = '700 11px "SF Mono", "Menlo", monospace';
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      const nextX = Math.min(gx + boardW + 42, width - 34);
+      ctx.fillText("NEXT", nextX, gy + 18);
+      drawLetter(
+        game.nextCh,
+        0,
+        game.vitaminColors[game.nextColorIndex],
+        nextX,
+        gy + 50,
+        24
+      );
+    }
 
     if (game.gameOver) {
       ctx.fillStyle = "rgba(255, 250, 241, 0.8)";
@@ -637,7 +663,13 @@
     [dropButton, () => game.hardDrop()],
   ].forEach(([button, action]) => {
     if (!button) return;
-    button.addEventListener("click", action);
+    button.addEventListener("pointerdown", (event) => {
+      event.preventDefault();
+      action();
+    });
+    button.addEventListener("dblclick", (event) => {
+      event.preventDefault();
+    });
   });
 
   canvas.addEventListener("pointerdown", () => {
@@ -647,6 +679,11 @@
   });
 
   window.addEventListener("resize", () => {
+    resizeCanvas();
+    render();
+  });
+
+  window.visualViewport?.addEventListener("resize", () => {
     resizeCanvas();
     render();
   });
