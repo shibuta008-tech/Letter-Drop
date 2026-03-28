@@ -1,0 +1,287 @@
+:root {
+  --cream: #fffaf1;
+  --paper: rgba(255, 251, 244, 0.84);
+  --paper-strong: rgba(255, 251, 244, 0.94);
+  --ink: #171311;
+  --muted: #7e7369;
+  --line: rgba(23, 19, 17, 0.1);
+  --shadow: 0 24px 80px rgba(10, 10, 10, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: "Avenir Next", "Hiragino Sans", "Yu Gothic", sans-serif;
+}
+
+body {
+  overflow: hidden;
+}
+
+.app-shell {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 12% 20%, rgba(255, 137, 94, 0.12), transparent 24%),
+    radial-gradient(circle at 85% 18%, rgba(13, 126, 247, 0.12), transparent 22%),
+    linear-gradient(180deg, #fffefb 0%, #fff7ea 100%);
+}
+
+#letter-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.game-layout {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  min-height: 100vh;
+  width: 100%;
+  padding: 28px;
+  pointer-events: none;
+  gap: 24px;
+}
+
+.hero-card {
+  width: min(420px, 100%);
+  padding: 24px;
+  border-radius: 30px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  backdrop-filter: blur(18px);
+  box-shadow: var(--shadow);
+  pointer-events: auto;
+  animation: rise 700ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.yaku-card {
+  width: min(320px, 100%);
+  max-height: calc(100vh - 56px);
+  overflow: auto;
+  padding: 22px;
+  border-radius: 30px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  backdrop-filter: blur(18px);
+  box-shadow: var(--shadow);
+  pointer-events: auto;
+  animation: rise 700ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: 80ms;
+}
+
+.yaku-card h2 {
+  margin: 8px 0 0;
+  font-size: clamp(1.7rem, 3vw, 2.4rem);
+  line-height: 0.98;
+  letter-spacing: -0.05em;
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.hero-card h1 {
+  margin: 8px 0 0;
+  font-size: clamp(2.1rem, 4vw, 3.8rem);
+  line-height: 0.94;
+  letter-spacing: -0.06em;
+}
+
+.lede {
+  margin: 16px 0 0;
+  color: var(--ink);
+  opacity: 0.76;
+  line-height: 1.7;
+}
+
+.score-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.yaku-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.yaku-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: var(--paper-strong);
+  border: 1px solid rgba(23, 19, 17, 0.06);
+}
+
+.yaku-word {
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.yaku-points {
+  color: var(--muted);
+  white-space: nowrap;
+  font-size: 0.92rem;
+}
+
+.score-box {
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: var(--paper-strong);
+  border: 1px solid rgba(23, 19, 17, 0.06);
+}
+
+.score-label {
+  display: block;
+  color: var(--muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.score-box strong {
+  display: block;
+  margin-top: 8px;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+.status-line,
+.matched-line {
+  margin: 14px 0 0;
+  line-height: 1.6;
+}
+
+.status-line {
+  font-weight: 800;
+}
+
+.matched-line {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.key-guide {
+  display: grid;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.key-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: var(--paper-strong);
+  border: 1px solid rgba(23, 19, 17, 0.06);
+}
+
+.keycap,
+.ghost-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  min-height: 42px;
+  padding: 0 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(23, 19, 17, 0.12);
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: inset 0 -2px 0 rgba(23, 19, 17, 0.06);
+  font-weight: 700;
+}
+
+.secondary-guide {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.touch-controls {
+  position: fixed;
+  z-index: 2;
+  left: 50%;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  display: none;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  width: min(calc(100vw - 24px), 520px);
+  padding: 10px;
+  border-radius: 24px;
+  border: 1px solid rgba(23, 19, 17, 0.08);
+  background: rgba(255, 251, 244, 0.88);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.12);
+}
+
+.touch-button {
+  border: 0;
+  min-height: 52px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--ink);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.touch-button-accent {
+  background: #171311;
+  color: #fffaf1;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 720px) {
+  .game-layout {
+    justify-content: center;
+    padding: 18px;
+  }
+
+  .hero-card {
+    padding: 20px;
+  }
+
+  .yaku-card {
+    display: none;
+  }
+
+  .touch-controls {
+    display: grid;
+  }
+}

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>letter drop web</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <canvas id="letter-canvas" aria-hidden="true"></canvas>
+
+      <main class="game-layout">
+        <section class="hero-card">
+          <p class="eyebrow">browser concept</p>
+          <h1>Letter Drop</h1>
+          <p class="lede">
+            写真機能を外して、文字が落ちるゲームだけをブラウザ向けに残した版です。
+          </p>
+
+          <div class="score-grid" aria-label="score board">
+            <div class="score-box">
+              <span class="score-label">score</span>
+              <strong id="score-value">0</strong>
+            </div>
+            <div class="score-box">
+              <span class="score-label">combo</span>
+              <strong id="combo-value">1x</strong>
+            </div>
+          </div>
+
+          <p class="status-line" id="status-line">役を作ってください</p>
+          <p class="matched-line" id="matched-line">
+            5文字 200点 / 4文字 100点 / 3文字 50点 / 2文字 10点 / 末尾♥で2倍
+          </p>
+
+          <div class="key-guide" aria-label="keyboard controls">
+            <div class="key-row">
+              <span class="keycap">W</span>
+              <span>回転</span>
+            </div>
+            <div class="key-row">
+              <span class="keycap">A</span>
+              <span>左へ移動</span>
+            </div>
+            <div class="key-row">
+              <span class="keycap">S</span>
+              <span>下に落下</span>
+            </div>
+            <div class="key-row">
+              <span class="keycap">D</span>
+              <span>右へ移動</span>
+            </div>
+          </div>
+
+          <div class="secondary-guide">
+            <span class="ghost-chip">R でリセット</span>
+            <span class="ghost-chip">クリック / タップでも再開</span>
+          </div>
+        </section>
+
+        <aside class="yaku-card">
+          <p class="eyebrow">yaku list</p>
+          <h2>役一覧</h2>
+          <div class="yaku-list" id="yaku-list"></div>
+          <p class="matched-line">
+            末尾に ♥ が付くと2倍。マンコが揃うとゲームオーバーで 0 点です。
+          </p>
+        </aside>
+      </main>
+
+      <div class="touch-controls" aria-label="touch controls">
+        <button class="touch-button" id="touch-rotate" type="button">回転</button>
+        <button class="touch-button" id="touch-left" type="button">左</button>
+        <button class="touch-button" id="touch-right" type="button">右</button>
+        <button class="touch-button touch-button-accent" id="touch-drop" type="button">落下</button>
+      </div>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
