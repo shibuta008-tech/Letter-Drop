@@ -342,7 +342,10 @@ body {
   }
 
   .matched-line {
-    display: none;
+    display: block;
+    min-height: 0.95rem;
+    font-size: 0.6rem;
+    line-height: 1.2;
   }
 
   .yaku-card {
