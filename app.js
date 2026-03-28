@@ -23,6 +23,7 @@
         { text: "ウンコ", points: 50 },
         { text: "ウンチ", points: 50 },
         { text: "ウマ", points: 10 },
+        { text: "ママ", points: 10 },
         { text: "マチ", points: 10 },
         { text: "ポチ", points: 10 },
         { text: "ポン", points: 10 },
@@ -552,7 +553,7 @@
     const rightInset = desktop && yakuRect ? width - yakuRect.left + 24 : 0;
     const topInset = desktop
       ? Math.min(180, height * 0.19)
-      : Math.max((heroRect?.bottom ?? 0) + 14, 140);
+      : Math.max((heroRect?.bottom ?? 0) + 8, 110);
     const bottomLimit = desktop
       ? height - 80
       : Math.max((touchRect?.top ?? height - 96) - 18, topInset + 120);
@@ -676,6 +677,21 @@
     if (game.gameOver) {
       game.reset();
     }
+  });
+
+  let lastTouchEnd = 0;
+  document.addEventListener("touchend", (event) => {
+    const now = Date.now();
+    if (now - lastTouchEnd < 320) {
+      event.preventDefault();
+    }
+    lastTouchEnd = now;
+  }, { passive: false });
+
+  ["gesturestart", "gesturechange", "gestureend"].forEach((eventName) => {
+    document.addEventListener(eventName, (event) => {
+      event.preventDefault();
+    }, { passive: false });
   });
 
   window.addEventListener("resize", () => {
