@@ -536,7 +536,9 @@
     const desktop = width > 900;
     const leftInset = desktop && heroRect ? heroRect.right + 40 : 0;
     const rightInset = desktop && yakuRect ? width - yakuRect.left + 24 : 0;
-    const topInset = !desktop && heroRect ? heroRect.bottom + 24 : Math.min(180, height * 0.19);
+    const topInset = !desktop && heroRect
+      ? Math.min(heroRect.bottom + 18, height * 0.34)
+      : Math.min(180, height * 0.19);
     const bottomPad = desktop ? 80 : 150;
     const usableWidth = Math.max(width - leftInset - rightInset, width * 0.32);
     const usableHeight = Math.max(height - topInset - bottomPad, height * 0.35);

@@ -268,13 +268,37 @@ body {
 }
 
 @media (max-width: 720px) {
+  body {
+    overflow: auto;
+  }
+
   .game-layout {
     justify-content: center;
     padding: 18px;
   }
 
   .hero-card {
+    width: 100%;
     padding: 20px;
+  }
+
+  .lede,
+  .key-guide,
+  .secondary-guide {
+    display: none;
+  }
+
+  .score-grid {
+    margin-top: 14px;
+  }
+
+  .status-line,
+  .matched-line {
+    margin-top: 10px;
+  }
+
+  .matched-line {
+    font-size: 0.84rem;
   }
 
   .yaku-card {
