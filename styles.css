@@ -303,9 +303,7 @@ body {
   }
 
   .hero-card h1 {
-    margin: 0;
-    font-size: clamp(1.18rem, 6vw, 1.55rem);
-    line-height: 0.95;
+    display: none;
   }
 
   .lede,
@@ -340,8 +338,7 @@ body {
   }
 
   .status-line {
-    font-size: 0.66rem;
-    line-height: 1.15;
+    display: none;
   }
 
   .matched-line {
