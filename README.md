@@ -11,11 +11,3 @@
 - 連鎖: 消去後の落下で続けて揃うと 2x / 4x / 8x ...
 - 禁止語: `マンコ` が揃うとゲームオーバーで 0 点
 
-簡易サーバーで開く場合:
-
-```bash
-cd /Users/sjdjeb3gmail.com/Downloads/photo/photo/web
-python3 -m http.server 4173
-```
-
-その後、`http://localhost:4173` をブラウザで開いてください。
