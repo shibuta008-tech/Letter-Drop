@@ -23,6 +23,7 @@
         { text: "ウンコ", points: 50 },
         { text: "ウンチ", points: 50 },
         { text: "ウマ", points: 10 },
+        { text: "ウチ", points: 10 },
         { text: "ママ", points: 10 },
         { text: "マチ", points: 10 },
         { text: "ポチ", points: 10 },
